@@ -26,12 +26,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 
-rightWrist = 0
-leftWrist = 0
-leftIndex = 0
-leftPinky = 0
-leftAnkle = 0
-rightAnkle = 0
+
 red_dot = mp_draw.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=1)  # draw red dots
 green_line = mp_draw.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1)
 
@@ -41,6 +36,7 @@ while True:
     ret, frame = vid.read()
 
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame = cv2.resize(frame, (640,640))
 
     results = pose.process(frame)  # result
     image = cv2.putText(frame, 'Your pose is: ', (50, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
@@ -61,7 +57,12 @@ while True:
                      results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
         leftShoulder = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,
                      results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
-
+        leftFootIndex = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_FOOT_INDEX.value].x,
+                     results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_FOOT_INDEX.value].y]
+        leftHeel = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_HEEL.value].x,
+                     results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_HEEL.value].y]
+        leftHip = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_HIP.value].x,
+                     results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_HIP.value].y]
 
         rightWrist = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_WRIST.value].x,
                     results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_WRIST.value].y]
@@ -73,32 +74,50 @@ while True:
                       results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_ELBOW.value].y]
         rightShoulder = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x,
                         results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].y]
+        rightFootIndex = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_FOOT_INDEX.value].x,
+                         results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_FOOT_INDEX.value].y]
+        rightHeel = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_HEEL.value].x,
+                    results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_HEEL.value].y]
+        rightHip = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_HIP.value].x,
+                   results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_HIP.value].y]
+
+       # nose = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE.value].x,
+         #             results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE.value].y]
 
         leftWristAngle = calculate_angle(leftIndex, leftWrist, leftPinky)
         rightWristAngle = calculate_angle(rightIndex, rightWrist, rightPinky)
         leftElbowAngle = calculate_angle(leftWrist, leftElbow, leftShoulder)
         rightElbowAngle = calculate_angle(rightWrist, rightElbow, rightShoulder)
+        heelAngle  = calculate_angle(rightFootIndex, leftHeel, leftFootIndex)
+        #rightHeelAngle = calculate_angle(rightHip, rightHeel, rightFootIndex)
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # fix color
 
         # multiply the position of the text so that it is next to left wrist times webcam dimensions
-        cv2.putText(frame, str(leftWristAngle),
-                    tuple(np.multiply(leftWrist, [640, 480]).astype(int)),
+        cv2.putText(frame, str(round(leftWristAngle,1)),
+                    tuple(np.multiply(leftWrist, [640, 600]).astype(int)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                     )
 
-        cv2.putText(frame, str(rightWristAngle),
-                    tuple(np.multiply(rightWrist, [640, 480]).astype(int)),
+        cv2.putText(frame, str(round(rightWristAngle,1)),
+                    tuple(np.multiply(rightWrist, [500, 600]).astype(int)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                     )
-        cv2.putText(frame, str(leftElbowAngle),
-                    tuple(np.multiply(leftElbow, [640, 480]).astype(int)),
+        cv2.putText(frame, str(round(leftElbowAngle, 1)),
+                    tuple(np.multiply(leftElbow, [640,600]).astype(int)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                     )
-        cv2.putText(frame, str(rightElbowAngle),
-                    tuple(np.multiply(rightElbow, [640, 480]).astype(int)),
+        cv2.putText(frame, str(round(rightElbowAngle,1)),
+                    tuple(np.multiply(rightElbow, [500, 600]).astype(int)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                     )
+
+        cv2.putText(frame, str(round(heelAngle, 1)),
+                    tuple(np.multiply(leftHeel, [670, 640]).astype(int)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                    )
+
+
 
         mp_draw.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS, landmark_drawing_spec=red_dot,
                                connection_drawing_spec=green_line)
