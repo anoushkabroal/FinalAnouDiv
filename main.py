@@ -45,7 +45,10 @@ while True:
     height, width, _ = frame.shape
     if (results.pose_landmarks):
         # wrist = results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_WRIST].y * height
-        #  nose = results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE].y * height
+        # nose = results.pose_landmarks.landmark[mp_pose.PoseLandmark.CHIN].y * height
+
+        nose = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE.value].x,
+                     results.pose_landmarks.landmark[mp_pose.PoseLandmark.NOSE.value].y]
 
         leftWrist = [results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_WRIST.value].x,
                     results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
@@ -92,6 +95,18 @@ while True:
         #rightHeelAngle = calculate_angle(rightHip, rightHeel, rightFootIndex)
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # fix color
+
+        # First Position
+        if(rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftIndex[1] > leftShoulder[1] and rightIndex[1] > rightShoulder[1]):
+            if(135 < leftElbowAngle < 165 and 135 < rightElbowAngle < 165 and 20 < leftWristAngle < 35 and 20 < rightWristAngle < 35):
+                image = cv2.putText(frame, 'First Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
+
+                # Second Position
+            if (rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftFootIndex[0] > leftHip[0] and rightFootIndex[0] < rightHip[0]
+                and leftWrist[0] > leftShoulder[0] and rightWrist[0] < rightShoulder[0]
+                and nose[1] < leftWrist[1] < leftHip[1] and nose[1] < rightWrist[1] < rightHip[1]):
+                if (155 < leftElbowAngle < 180 and 155 < rightElbowAngle < 180 and 0 < leftWristAngle < 10 and 0 < rightWristAngle < 10):
+                 image = cv2.putText(frame, 'Second Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
 
         # multiply the position of the text so that it is next to left wrist times webcam dimensions
         cv2.putText(frame, str(round(leftWristAngle,1)),
