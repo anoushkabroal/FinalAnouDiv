@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+from threading import Timer
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
@@ -30,6 +31,15 @@ hands = mp_hands.Hands()
 red_dot = mp_draw.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=1)  # draw red dots
 green_line = mp_draw.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1)
 
+def scoreFirst():
+    # First Position
+    if (rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftIndex[1] > leftShoulder[1] and
+            rightIndex[1] > rightShoulder[1]):
+        if (135 < leftElbowAngle < 165 and 135 < rightElbowAngle < 165 and 20 < leftWristAngle < 35 and 20 < rightWristAngle < 35):
+            #return cv2.putText(frame, 'First Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
+            print("YOOOOO")
+
+
 while True:
 
     # Capture the video frame by frame
@@ -39,7 +49,7 @@ while True:
     frame = cv2.resize(frame, (640,640))
 
     results = pose.process(frame)  # result
-    image = cv2.putText(frame, 'Your pose is: ', (50, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
+    #image = cv2.putText(frame, 'Your pose is: ', (50, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
 
     # red landmarks, and green connection lines
     height, width, _ = frame.shape
@@ -101,55 +111,6 @@ while True:
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # fix color
 
-        # First Position
-        if(rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftIndex[1] > leftShoulder[1] and rightIndex[1] > rightShoulder[1]):
-            if(135 < leftElbowAngle < 165 and 135 < rightElbowAngle < 165 and 20 < leftWristAngle < 35 and 20 < rightWristAngle < 35):
-                image = cv2.putText(frame, 'First Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-
-        # Second Position
-        if (rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftFootIndex[0] > leftHip[0] and rightFootIndex[0] < rightHip[0]
-            and leftWrist[0] > leftShoulder[0] and rightWrist[0] < rightShoulder[0]
-            and nose[1] < leftWrist[1] < leftHip[1] and nose[1] < rightWrist[1] < rightHip[1]):
-            if (145 < leftElbowAngle < 180 and 145 < rightElbowAngle < 180 and 0 < leftWristAngle < 10 and 0 < rightWristAngle < 10):
-                 image = cv2.putText(frame, 'Second Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-
-        #Third Position Scrap
-      #  if(rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0]):
-         #   if(leftHeel[0] < rightHeel[0] < leftFootIndex[0] and leftWrist[0] > leftShoulder[0]
-         #           and nose[1] < leftWrist[1] < leftHip[1] and rightWrist[1] < nose[1]):
-              #  if(145 < rightElbowAngle < 160 and 155 < leftElbowAngle < 180
-               #         and 0 < rightWristAngle < 20 and 0 < leftWristAngle < 20):
-            #        image = cv2.putText(frame, 'Third Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-           # elif(rightFootIndex[0] < leftHeel[0] < rightHeel[0] and rightWrist[0] < rightShoulder[0]
-            #     and nose[1] < rightWrist[1] < rightHip[1] and leftWrist[1] < nose[1]):
-           #     if (145 < leftElbowAngle < 160 and 155 < rightElbowAngle < 180
-           #             and 0 < leftWristAngle < 20 and 0 < rightWristAngle < 20):
-            #        image = cv2.putText(frame, 'Third Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-
-        #Right Passe
-        if(leftFootIndex[0] > leftHeel[0] and rightKnee[0] < rightHip[0] and rightHeel[1] < leftKnee[1] and rightHeel[0] < rightFootIndex[0]):
-            if(leftWrist[1] < nose[1] and rightWrist[1] < nose[1]):
-                image = cv2.putText(frame, 'Right Passe', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-
-        # Fourth Position
-        if (rightFootIndex[0] < rightHeel[0]):
-            if(rightWrist[1] < nose[1] and rightShoulder[0] < leftWrist[0] < leftShoulder[0] and nose[1] < leftWrist[1] < leftHip[1]):
-                if( 0 < rightWristAngle < 20):
-                    image = cv2.putText(frame, 'Fourth Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-
-        elif (leftFootIndex[0] > leftHeel[0]):
-            if (leftWrist[1] < nose[1] and rightShoulder[0] < rightWrist[0] < leftShoulder[0] and nose[1] < rightWrist[1] < rightHip[1]):
-                if (0 < leftWristAngle < 20):
-                    image = cv2.putText(frame, 'Fourth Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-
-
-        #Fifth Position
-        if (rightFootIndex[0] < rightHeel[0] or leftFootIndex[0] > leftHeel[0] and rightHeel[1] > leftKnee[1]):
-            if(leftWrist[1] < nose[1] and rightWrist[1] < nose[1]):
-                if (125 < leftElbowAngle < 160 and 125 < rightElbowAngle < 160
-                and 0 < rightWristAngle< 20 and 0 < leftWristAngle < 20):
-                    image = cv2.putText(frame, 'Fifth Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-
         # multiply the position of the text so that it is next to left wrist times webcam dimensions
         cv2.putText(frame, str(round(leftWristAngle,1)),
                     tuple(np.multiply(leftWrist, [640, 600]).astype(int)),
@@ -178,6 +139,14 @@ while True:
 
         mp_draw.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS, landmark_drawing_spec=red_dot,
                                connection_drawing_spec=green_line)
+
+
+        #Start checks here
+        t = Timer(30, scoreFirst)
+       # image = cv2.putText(frame, 'Time (30 seconds till score: '+t, (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
+        t.start()
+        while(t == False):
+            image = cv2.putText(frame, 'Please demonstrate First Position', (20, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
 
     cv2.imshow('frame', frame)
 
