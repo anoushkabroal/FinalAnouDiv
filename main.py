@@ -11,6 +11,9 @@ from mediapipe.tasks.python import vision
 rightFootIndex, leftFootIndex, rightHeel, leftHeel, leftIndex, leftShoulder, rightIndex, rightShoulder = [], [], [], [], [], [], [], []
 leftElbowAngle, rightElbowAngle, leftWristAngle, rightWristAngle, leftWrist, rightWrist, leftHip, rightHip, leftKnee, rightKnee, nose = 0, 0, 0, 0, [], [], [], [], [], [], []
 
+
+
+
 image_path = ' '
 
 def calculate_angle(a, b, c):
@@ -39,66 +42,70 @@ hands = mp_hands.Hands()
 red_dot = mp_draw.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=1)  # draw red dots
 green_line = mp_draw.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=1)
 
+def check_landmarks_not_empty(*landmarks):
+    return all(landmarks)
+
+def doForAll(frame, remaining_time, dance_position):
+    cv2.putText(frame, f'Time left: {int(remaining_time)}s', (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+    cv2.putText(frame, 'Please demonstrate: ' + dance_position, (10, 60),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+
 def scoreFirst():
-    # First Position
-    if (rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftIndex[1] > leftShoulder[1] and
+    if check_landmarks_not_empty(rightFootIndex, leftFootIndex, rightHeel, leftHeel, leftIndex, leftShoulder, rightIndex, rightShoulder):
+        if (rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftIndex[1] > leftShoulder[1] and
             rightIndex[1] > rightShoulder[1]):
-        if (135 < leftElbowAngle < 165 and 135 < rightElbowAngle < 165 and 20 < leftWristAngle < 35 and 20 < rightWristAngle < 35):
-            #return cv2.putText(frame, 'First Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-            print("YOOOOO")
-def scoreSecond():
-    # Second Position
-    if (rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftFootIndex[0] > leftHip[0] and
-            rightFootIndex[0] < rightHip[0]
-            and leftWrist[0] > leftShoulder[0] and rightWrist[0] < rightShoulder[0]
-            and nose[1] < leftWrist[1] < leftHip[1] and nose[1] < rightWrist[1] < rightHip[1]):
-        if (145 < leftElbowAngle < 180 and 145 < rightElbowAngle < 180 and 0 < leftWristAngle < 10 and 0 < rightWristAngle < 10):
-            # image = cv2.putText(frame, 'Second Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-            print("YOOOOO")
-def scoreFourth():
-    # Fourth Position
-    if (rightFootIndex[0] < rightHeel[0]):
-        if (rightWrist[1] < nose[1] and rightShoulder[0] < leftWrist[0] < leftShoulder[0] and nose[1] < leftWrist[1] <
-                leftHip[1]):
-            if (0 < rightWristAngle < 20):
-               # image = cv2.putText(frame, 'Fourth Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-               print("YOOOOO")
-
-def scoreFifth():
-    # Fifth Position
-    if (rightFootIndex[0] < rightHeel[0] or leftFootIndex[0] > leftHeel[0] and rightHeel[1] > leftKnee[1]):
-        if (leftWrist[1] < nose[1] and rightWrist[1] < nose[1]):
-            if (125 < leftElbowAngle < 160 and 125 < rightElbowAngle < 160
-                    and 0 < rightWristAngle < 20 and 0 < leftWristAngle < 20):
-                        #image = cv2.putText(frame, 'Fifth Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-                        print("YOOOOO")
-
-def scorePasse():
-    # Right Passe
-    if (leftFootIndex[0] > leftHeel[0] and rightKnee[0] < rightHip[0] and rightHeel[1] < leftKnee[1] and rightHeel[0] <
-            rightFootIndex[0]):
-        if (leftWrist[1] < nose[1] and rightWrist[1] < nose[1]):
-            #  image = cv2.putText(frame, 'Right Passe', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
-            print("YOOOOO")
-    elif (leftFootIndex[0] > leftHeel[0]):
-        if (leftWrist[1] < nose[1] and rightShoulder[0] < rightWrist[0] < leftShoulder[0] and nose[1] < rightWrist[1] <
-                rightHip[1]):
-            if (0 < leftWristAngle < 20):
-                #  image = cv2.putText(frame, 'Fourth Position', (300, 50), 4, 1, (0, 0, 0), 2, cv2.LINE_AA)
+            if (135 < leftElbowAngle < 165 and 135 < rightElbowAngle < 165 and 20 < leftWristAngle < 35 and 20 < rightWristAngle < 35):
                 print("YOOOOO")
 
+def scoreSecond():
+    if check_landmarks_not_empty(rightFootIndex, leftFootIndex, rightHeel, leftHeel, leftIndex, leftShoulder, rightIndex, rightShoulder):
+        if (rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftFootIndex[0] > leftHip[0] and
+            rightFootIndex[0] < rightHip[0] and leftWrist[0] > leftShoulder[0] and rightWrist[0] < rightShoulder[0]
+            and nose[1] < leftWrist[1] < leftHip[1] and nose[1] < rightWrist[1] < rightHip[1]):
+            if (145 < leftElbowAngle < 180 and 145 < rightElbowAngle < 180 and 0 < leftWristAngle < 10 and 0 < rightWristAngle < 10):
+                print("YOOOOO")
+
+def scoreFourth():
+    if check_landmarks_not_empty(rightFootIndex, rightHeel, leftWrist, rightShoulder, leftShoulder, nose, leftHip):
+        if (rightFootIndex[0] < rightHeel[0]):
+            if (rightWrist[1] < nose[1] and rightShoulder[0] < leftWrist[0] < leftShoulder[0] and nose[1] < leftWrist[1] < leftHip[1]):
+                if (0 < rightWristAngle < 20):
+                    print("YOOOOO")
+
+def scoreFifth():
+    if check_landmarks_not_empty(rightFootIndex, leftFootIndex, rightHeel, leftKnee, leftWrist, nose, rightWrist):
+        if (rightFootIndex[0] < rightHeel[0] or leftFootIndex[0] > leftHeel[0] and rightHeel[1] > leftKnee[1]):
+            if (leftWrist[1] < nose[1] and rightWrist[1] < nose[1]):
+                if (125 < leftElbowAngle < 160 and 125 < rightElbowAngle < 160 and 0 < rightWristAngle < 20 and 0 < leftWristAngle < 20):
+                    print("YOOOOO")
+
+def scorePasse():
+    if check_landmarks_not_empty(leftFootIndex, leftHeel, rightKnee, rightHip, rightHeel, rightFootIndex, leftWrist, nose, rightShoulder, leftShoulder, rightWrist, leftHip):
+        if (leftFootIndex[0] > leftHeel[0] and rightKnee[0] < rightHip[0] and rightHeel[1] < leftKnee[1] and rightHeel[0] < rightFootIndex[0]):
+            if (leftWrist[1] < nose[1] and rightWrist[1] < nose[1]):
+                print("YOOOOO")
+        elif (leftFootIndex[0] > leftHeel[0]):
+            if (leftWrist[1] < nose[1] and rightShoulder[0] < rightWrist[0] < leftShoulder[0] and nose[1] < rightWrist[1] < rightHip[1]):
+                if (0 < leftWristAngle < 20):
+                    print("YOOOOO")
+
 def totalScore(score1, score2, score3, score4, score5):
-    return score1+score2+score3+score4+score5
+    return score1 + score2 + score3 + score4 + score5
+
+def startingScreen():
+    print("Nothing")
 def start_timer():
-    threading.Timer(0, scoreFirst).start()
-    threading.Timer(30, scoreSecond).start()
-    threading.Timer(60, scoreFourth).start()
-    threading.Timer(90, scoreFifth).start()
-    threading.Timer(120, scorePasse).start()
-    threading.Timer(150, totalScore(1,1,1,1,1)).start()
+    threading.Timer(0, startingScreen).start()
+    threading.Timer(30, scoreFirst).start()
+    threading.Timer(60, scoreSecond).start()
+    threading.Timer(90, scoreFourth).start()
+    threading.Timer(120, scoreFifth).start()
+    threading.Timer(150, scorePasse).start()
+    threading.Timer(180, totalScore(1,1,1,1,1)).start()
 
 start_time = time.time()
-timer_duration = 5  # Duration for each position in seconds
+timer_duration = 30  # Duration for each position in seconds
 
 start_timer()
 while True:
@@ -216,32 +223,68 @@ while True:
         position_phase = int(elapsed_time // timer_duration) + 1
         dance_position = " "
         if(position_phase == 1):
+            cv2.putText(frame, 'Welcome to Ballet Bonanza!', (60, 40),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
+            cv2.putText(frame, 'Get ready! In 30 seconds you', (94, 570),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2, cv2.LINE_AA)
+            cv2.putText(frame, 'should be prepared with an open space to', (10, 590),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2, cv2.LINE_AA)
+            cv2.putText(frame, 'pose', (310, 610),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2, cv2.LINE_AA)
+            cv2.imshow('frame', frame)
+        elif(position_phase == 2):
             dance_position = "First Position"
             image_path = 'firstPosition.png'
-        if(position_phase == 2):
-            dance_position = "Second Position"
-            image_path = 'secondPosition.png'
-        if (position_phase == 3):
-            dance_position = "Fourth Position"
-            image_path = 'fourthPosition.png'
-        if (position_phase == 4):
-            dance_position = "Fifth Position"
-            image_path = 'fifthPosition.png'
-        if (position_phase == 5):
-            dance_position = "Right Passe"
-            image_path = 'rightPasse.png'
-        if(position_phase <= 5):
-            cv2.putText(frame, f'Time left: {int(remaining_time)}s', (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
-            cv2.putText(frame, 'Please demonstrate: '+dance_position, (10, 60),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+            doForAll(frame,remaining_time, dance_position)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
             cv2.imshow('Example', overlay_image)
-        else:
-            print("The score should be printed here")
+        elif(position_phase == 3):
+            dance_position = "Second Position"
+            image_path = 'secondPosition.png'
+            doForAll(frame, remaining_time, dance_position)
+            cv2.imshow('frame', frame)
+            overlay_image = cv2.imread(image_path)
+            overlay_image = cv2.resize(overlay_image, (200, 400))
+            cv2.imshow('Example', overlay_image)
+        elif (position_phase == 4):
+            dance_position = "Fourth Position"
+            image_path = 'fourthPosition.png'
+            doForAll(frame, remaining_time, dance_position)
+            cv2.imshow('frame', frame)
+            overlay_image = cv2.imread(image_path)
+            overlay_image = cv2.resize(overlay_image, (200, 400))
+            cv2.imshow('Example', overlay_image)
+        elif (position_phase == 5):
+            dance_position = "Fifth Position"
+            image_path = 'fifthPosition.png'
+            doForAll(frame, remaining_time, dance_position)
+            cv2.imshow('frame', frame)
+            overlay_image = cv2.imread(image_path)
+            overlay_image = cv2.resize(overlay_image, (200, 400))
+            cv2.imshow('Example', overlay_image)
+        elif (position_phase == 6):
+            dance_position = "Right Passe"
+            image_path = 'rightPasse.png'
+            doForAll(frame, remaining_time, dance_position)
+            cv2.imshow('frame', frame)
+            overlay_image = cv2.imread(image_path)
+            overlay_image = cv2.resize(overlay_image, (200, 400))
+            cv2.imshow('Example', overlay_image)
+        elif(position_phase == 7):
+            print("The score should be printed here and also maybe pass in all the previous scores somehow")
+            cv2.putText(frame, 'Your cumulative score is: (score)', (10, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+            image_path = 'goodJob.jpg'
+            cv2.imshow('frame', frame)
+            overlay_image = cv2.imread(image_path)
+            overlay_image = cv2.resize(overlay_image, (200, 400))
+            cv2.imshow('Slay!', overlay_image)
+            #cv2.destroyWindow('Example')
+        else: #END IT ALL! Break doesn't work though
             cv2.destroyAllWindows()
+            break
             #break
 
 
