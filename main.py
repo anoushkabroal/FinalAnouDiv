@@ -60,90 +60,93 @@ def scoreFirst():
     if check_landmarks_not_empty(rightFootIndex, leftFootIndex, rightHeel, leftHeel, leftIndex, leftShoulder, rightIndex, rightShoulder):
         if (rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftIndex[1] > leftShoulder[1] and
             rightIndex[1] > rightShoulder[1]):
-            if 135 < leftElbowAngle < 145 and 135 < rightElbowAngle < 145 and 20 < leftWristAngle < 35 and 20 < rightWristAngle < 35:
+            if 145 < leftElbowAngle < 155 and 145 < rightElbowAngle < 155 and 18 < leftWristAngle < 35 and 18 < rightWristAngle < 35:
                 print("YOOOOO")
                 score1 = 100
-            if 125 < leftElbowAngle < 155 and 125 < rightElbowAngle < 155 and 10 < leftWristAngle < 45 and 10 < rightWristAngle < 45:
+            elif 125 < leftElbowAngle < 165 and 125 < rightElbowAngle < 165 and 8 < leftWristAngle < 55 and 8 < rightWristAngle < 55:
                 score1 = 90
-            if 115 < leftElbowAngle < 165 and 115 < rightElbowAngle < 165 and 5 < leftWristAngle < 55 and 5 < rightWristAngle < 55:
+            elif 115 < leftElbowAngle < 175 and 115 < rightElbowAngle < 175 and 5 < leftWristAngle < 65 and 5 < rightWristAngle < 65:
                 score1 = 70
-            if 105 < leftElbowAngle < 175 and 105 < rightElbowAngle < 175 and 5 < leftWristAngle < 65 and 5 < rightWristAngle < 65:
+            elif 105 < leftElbowAngle < 185 and 105 < rightElbowAngle < 185 and 5 < leftWristAngle < 75 and 5 < rightWristAngle < 75:
                 score1 = 50
         else:
             score1 = 0
             print("not doing first position")
+        return score1
 def scoreSecond():
     global score2
     if check_landmarks_not_empty(rightFootIndex, leftFootIndex, rightHeel, leftHeel, leftIndex, leftShoulder, rightIndex, rightShoulder):
         if (rightFootIndex[0] < rightHeel[0] and leftFootIndex[0] > leftHeel[0] and leftFootIndex[0] > leftHip[0] and
             rightFootIndex[0] < rightHip[0] and leftWrist[0] > leftShoulder[0] and rightWrist[0] < rightShoulder[0]
             and nose[1] < leftWrist[1] < leftHip[1] and nose[1] < rightWrist[1] < rightHip[1]):
-            if (145 < leftElbowAngle < 160 and 145 < rightElbowAngle < 160 and 3 < leftWristAngle < 7 and 3 < rightWristAngle < 7):
+            if (145 < leftElbowAngle < 170 and 145 < rightElbowAngle < 170 and 0 < leftWristAngle < 40 and 0 < rightWristAngle < 40):
                 print("YOOOOO")
                 score2 = 100
-            if 135 < leftElbowAngle < 170 and 135 < rightElbowAngle < 170 and 3 < leftWristAngle < 10 and 3 < rightWristAngle < 10:
+            elif 135 < leftElbowAngle < 180 and 135 < rightElbowAngle < 180 and 0 < leftWristAngle < 40 and 0 < rightWristAngle < 40:
                 score2 = 90
-            if 125 < leftElbowAngle < 180 and 125 < rightElbowAngle < 180 and 1 < leftWristAngle < 15 and 1 < rightWristAngle < 15:
+            elif 125 < leftElbowAngle < 190 and 125 < rightElbowAngle < 190 and 0 < leftWristAngle < 40 and 0 < rightWristAngle < 40:
                 score2 = 70
-            if 100 < leftElbowAngle < 180 and 100 < rightElbowAngle < 180 and 0 < leftWristAngle < 25 and 0 < rightWristAngle < 25:
+            elif 100 < leftElbowAngle < 200 and 100 < rightElbowAngle < 200 and 0 < leftWristAngle < 60 and 0 < rightWristAngle < 60:
                 score2 = 50
         else:
             score2 = 0
             print("not doing second positon")
+        return score2
 
 def scoreFourth():
     global score3
     if check_landmarks_not_empty(rightFootIndex, rightHeel, leftWrist, rightShoulder, leftShoulder, nose, leftHip):
         if (rightFootIndex[0] < rightHeel[0]):
             if (rightWrist[1] < nose[1] and rightShoulder[0] < leftWrist[0] < leftShoulder[0] and nose[1] < leftWrist[1] < leftHip[1]):
-                if (0 < rightWristAngle < 20):
+                if (6 < rightWristAngle < 9 and 10< leftWristAngle < 30 and 120 < rightElbowAngle < 160  and 60 < leftElbowAngle < 90):
                     score3 = 100
                     print("YOOOOO")
-                if(0 < rightWristAngle < 35):
+                elif(5 < rightWristAngle < 10 and 5< leftWristAngle < 40 and 110 < rightElbowAngle < 170  and 55 < leftElbowAngle < 95):
                     score3 = 90
-                if (0 < rightWristAngle < 50):
+                elif (0 < rightWristAngle < 20 and 0 < leftWristAngle < 50 and 100 < rightElbowAngle < 180  and 50 < leftElbowAngle < 105):
                     score3 = 70
-                if (0 < rightWristAngle < 70):
+                elif (0 < rightWristAngle < 30 and 0 < leftWristAngle < 60 and 90 < rightElbowAngle < 190  and 40 < leftElbowAngle < 115):
                     score3 = 50
             else:
-                print("not doing fourht")
+                score3 = 0
+                print("not doing fourth")
+            return score3
 
 def scoreFifth():
     global score4
     if check_landmarks_not_empty(rightFootIndex, leftFootIndex, rightHeel, leftKnee, leftWrist, nose, rightWrist):
         if (rightFootIndex[0] < rightHeel[0] or leftFootIndex[0] > leftHeel[0] and rightHeel[1] > leftKnee[1]):
             if (leftWrist[1] < nose[1] and rightWrist[1] < nose[1]):
-                if (125 < leftElbowAngle < 150 and 125 < rightElbowAngle < 150 and 5 < rightWristAngle < 15 and 5 < leftWristAngle < 15):
+                if (140 < leftElbowAngle < 160 and 140 < rightElbowAngle < 160 and 9 < rightWristAngle < 17 and 9 < leftWristAngle < 17):
                     print("YOOOOO")
                     score4 = 100
-                if (125 < leftElbowAngle < 160 and 125 < rightElbowAngle < 160 and 2 < rightWristAngle < 20 and 2 < leftWristAngle < 20):
+                elif (130 < leftElbowAngle < 170 and 130 < rightElbowAngle < 170 and 5 < rightWristAngle < 27 and 5 < leftWristAngle < 27):
                     score4 = 90
-                if (135 < leftElbowAngle < 170 and 135 < rightElbowAngle < 170 and 0 < rightWristAngle < 30 and 0 < leftWristAngle < 30):
+                elif (120 < leftElbowAngle < 180 and 120 < rightElbowAngle < 180 and 3 < rightWristAngle < 37 and 3 < leftWristAngle < 37):
                     score4 = 70
-                if (150 < leftElbowAngle < 185 and 150 < rightElbowAngle < 185 and 0 < rightWristAngle < 50 and 0 < leftWristAngle < 50):
+                elif (110 < leftElbowAngle < 190 and 110 < rightElbowAngle < 190 and 0 < rightWristAngle < 47 and 0 < leftWristAngle < 47):
                     score4 = 50
 
             else:
+                score4 = 0
                 print("not in fifth position")
+            return score4
 def scorePasse():
     if check_landmarks_not_empty(leftFootIndex, leftHeel, rightKnee, rightHip, rightHeel, rightFootIndex, leftWrist, nose, rightShoulder, leftShoulder, rightWrist, leftHip):
         if (leftFootIndex[0] > leftHeel[0] and rightKnee[0] < rightHip[0] and rightHeel[1] < leftKnee[1] and rightHeel[0] < rightFootIndex[0]):
-            if (leftWrist[1] < nose[1] and rightWrist[1] < nose[1]):
-                print("YOOOOO")
-        elif (leftFootIndex[0] > leftHeel[0]):
-            if (leftWrist[1] < nose[1] and rightShoulder[0] < rightWrist[0] < leftShoulder[0] and nose[1] < rightWrist[1] < rightHip[1]):
-                if (5 < leftWristAngle < 15):
+            if (leftWrist[1] < nose[1]  and leftWrist[1] < nose[1]): #and rightShoulder[0] < rightWrist[0] < leftShoulder[0] and nose[1] < rightWrist[1] < rightHip[1]):
+                if ( 140 < leftElbowAngle < 160 and 140 < rightElbowAngle < 160 and 9 < rightWristAngle < 25 and 9 < leftWristAngle < 25):
                     score5 = 100
-                    print("YOOOOO")
-                if (2 < leftWristAngle < 20):
-                    score5 = 90
-                if (1 < leftWristAngle < 25):
+                elif (130 < leftElbowAngle < 170 and 130 < rightElbowAngle < 170 and 5 < rightWristAngle < 27 and 5 < leftWristAngle < 27):
+                    score5= 90
+                elif (120 < leftElbowAngle < 180 and 120 < rightElbowAngle < 180 and 3 < rightWristAngle < 37 and 3 < leftWristAngle < 37):
                     score5 = 70
-                if (0 < leftWristAngle < 35):
+                elif (110 < leftElbowAngle < 190 and 110 < rightElbowAngle < 190 and 0 < rightWristAngle < 47 and 0 < leftWristAngle < 47):
                     score5 = 50
-
             else:
+                score5 = 0
                 print("idfjbhefuogvh")
+            return score5
 
 def totalScore(score1, score2, score3, score4, score5):
     return score1 + score2 + score3 + score4 + score5
@@ -291,11 +294,16 @@ while True:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.putText(frame, 'pose', (310, 610),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2, cv2.LINE_AA)
+            cv2.putText(frame, 'Be sure to stand far back from the camera!', (45, 90),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
         elif(position_phase == 2):
             dance_position = "First Position"
             image_path = 'firstPosition.png'
             doForAll(frame,remaining_time, dance_position)
+            theScore = scoreFirst()
+            cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -304,6 +312,9 @@ while True:
             dance_position = "Second Position"
             image_path = 'secondPosition.png'
             doForAll(frame, remaining_time, dance_position)
+            theScore = scoreSecond()
+            cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -312,6 +323,9 @@ while True:
             dance_position = "Fourth Position"
             image_path = 'fourthPosition.png'
             doForAll(frame, remaining_time, dance_position)
+            theScore = scoreFourth()
+            cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -320,6 +334,9 @@ while True:
             dance_position = "Fifth Position"
             image_path = 'fifthPosition.png'
             doForAll(frame, remaining_time, dance_position)
+            theScore = scoreFifth()
+            cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -328,6 +345,9 @@ while True:
             dance_position = "Right Passe"
             image_path = 'rightPasse.png'
             doForAll(frame, remaining_time, dance_position)
+            theScore = scorePasse()
+            cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -335,7 +355,7 @@ while True:
         elif(position_phase == 7):
             print(totalScore(score1,score2,score3,score4,score5))
             #print("The score should be printed here and also maybe pass in all the previous scores somehow")
-            cv2.putText(frame, 'Your cumulative score is: (score)', (10, 60),
+            cv2.putText(frame, 'Your cumulative score is: '+str(totalScore(score1,score2,score3,score4,score5)), (10, 60),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             image_path = 'goodJob.jpg'
             cv2.imshow('frame', frame)
