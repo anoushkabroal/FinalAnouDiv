@@ -51,10 +51,19 @@ score4 = 0
 score5 = 0
 def doForAll(frame, remaining_time, dance_position):
     texts = [
-        (f'Time left: {int(remaining_time)}s', (10, 30), 1.2),
-        (f'Please demonstrate: ' + dance_position, (10, 80), 1.2)
+        (f'Time left: {int(remaining_time)}s', (10, 30), 1),
+        (f'Please demonstrate: ' + dance_position, (10, 80), 1)
     ]
 
+    for text, (x, y), scale in texts:
+        (w, h), b = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, scale, 2)
+
+        l = (x, y - h - b)
+        r = (x + w, y + b)
+        cv2.rectangle(frame, l, r, (255, 255, 255), -1)
+        cv2.putText(frame, text, (x, y), cv2.FONT_HERSHEY_SIMPLEX, scale, (0, 0, 0), 2, cv2.LINE_AA)
+
+def rectangles(texts):
     for text, (x, y), scale in texts:
         (w, h), b = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, scale, 2)
 
@@ -71,15 +80,42 @@ def scoreFirst():
             if 145 < leftElbowAngle < 155 and 145 < rightElbowAngle < 155 and 18 < leftWristAngle < 35 and 18 < rightWristAngle < 35:
                 print("YOOOOO")
                 score1 = 100
+                texts = [
+                    (f'Excellent!', (10, 540), 0.8)
+                ]
+                rectangles(texts)
+
             elif 125 < leftElbowAngle < 165 and 125 < rightElbowAngle < 165 and 8 < leftWristAngle < 55 and 8 < rightWristAngle < 55:
                 score1 = 90
+                texts = [
+                    (f'Think about rounding your wrists!', (10, 540), 0.8),
+                    (f'Try to get your wrist angles', (10, 580), 0.8),
+                    (f'closer to 27', (10, 610), 0.8)
+                ]
+                rectangles(texts)
             elif 115 < leftElbowAngle < 175 and 115 < rightElbowAngle < 175 and 5 < leftWristAngle < 65 and 5 < rightWristAngle < 65:
                 score1 = 70
+                texts = [
+                    (f'Think about rounding your elbows!', (10, 540), 0.8),
+                    (f'Try to get your elbow angles', (10, 580), 0.8),
+                    (f'closer to 150', (10, 610), 0.8)
+                ]
+                rectangles(texts)
             elif 105 < leftElbowAngle < 185 and 105 < rightElbowAngle < 185 and 5 < leftWristAngle < 75 and 5 < rightWristAngle < 75:
                 score1 = 50
+                texts = [
+                    (f'Think about rounding your elbows!', (10, 540), 0.8),
+                    (f'Try to get your elbow angles', (10, 580), 0.8),
+                    (f'closer to 145', (10, 610), 0.8)
+                ]
+                rectangles(texts)
         else:
             score1 = 0
             print("not doing first position")
+            texts = [
+                (f'Please mirror the dancer example', (10, 540), 0.8),
+            ]
+            rectangles(texts)
         return score1
 def scoreSecond():
     global score2
@@ -90,15 +126,41 @@ def scoreSecond():
             if (145 < leftElbowAngle < 170 and 145 < rightElbowAngle < 170 and 0 < leftWristAngle < 40 and 0 < rightWristAngle < 40):
                 print("YOOOOO")
                 score2 = 100
+                texts = [
+                    (f'Excellent!', (10, 540), 0.8),
+                ]
+                rectangles(texts)
             elif 135 < leftElbowAngle < 180 and 135 < rightElbowAngle < 180 and 0 < leftWristAngle < 40 and 0 < rightWristAngle < 40:
                 score2 = 90
+                texts = [
+                    (f'Think about rounding your elbows DOWN!', (10, 540), 0.8),
+                    (f'Try to get your elbow angles', (10, 580), 0.8),
+                    (f'closer to 158', (10, 610), 0.8)
+                ]
+                rectangles(texts)
             elif 125 < leftElbowAngle < 190 and 125 < rightElbowAngle < 190 and 0 < leftWristAngle < 40 and 0 < rightWristAngle < 40:
                 score2 = 70
+                texts = [
+                    (f'Think about rounding your elbows!', (10, 540), 0.8),
+                    (f'Try to get your elbow angles', (10, 580), 0.8),
+                    (f'closer to 140', (10, 610), 0.8)
+                ]
+                rectangles(texts)
             elif 100 < leftElbowAngle < 200 and 100 < rightElbowAngle < 200 and 0 < leftWristAngle < 60 and 0 < rightWristAngle < 60:
                 score2 = 50
+                texts = [
+                    (f'Think about rounding your elbows and wrists!', (10, 540), 0.8),
+                    (f'Try to get your elbow angles', (10, 580), 0.8),
+                    (f'closer to 135', (10, 610), 0.8)
+                ]
+                rectangles(texts)
         else:
             score2 = 0
-            print("not doing second positon")
+            print("not doing second position")
+            texts = [
+                (f'Please mirror the dancer shown', (10, 540), 0.8),
+            ]
+            rectangles(texts)
         return score2
 
 def scoreFourth():
@@ -109,15 +171,41 @@ def scoreFourth():
                 if (6 < rightWristAngle < 9 and 10< leftWristAngle < 30 and 120 < rightElbowAngle < 160  and 60 < leftElbowAngle < 90):
                     score3 = 100
                     print("YOOOOO")
+                    texts = [
+                        (f'Excellent!', (10, 540), 0.8),
+                    ]
+                    rectangles(texts)
                 elif(5 < rightWristAngle < 10 and 5< leftWristAngle < 40 and 110 < rightElbowAngle < 170  and 55 < leftElbowAngle < 95):
                     score3 = 90
+                    texts = [
+                        (f'Think about rounding your wrists!', (10, 540), 0.8),
+                        (f'Try to get your left wrist', (10, 580), 0.8),
+                        (f'closer to 7', (10, 610), 0.8)
+                    ]
+                    rectangles(texts)
                 elif (0 < rightWristAngle < 20 and 0 < leftWristAngle < 50 and 100 < rightElbowAngle < 180  and 50 < leftElbowAngle < 105):
                     score3 = 70
+                    texts = [
+                        (f'Think about rounding your elbows!', (10, 540), 0.8),
+                        (f'Try to get your left elbow', (10, 580), 0.8),
+                        (f'closer to 78', (10, 610), 0.8)
+                    ]
+                    rectangles(texts)
                 elif (0 < rightWristAngle < 30 and 0 < leftWristAngle < 60 and 90 < rightElbowAngle < 190  and 40 < leftElbowAngle < 115):
                     score3 = 50
+                    texts = [
+                        (f'Think about putting your left arm lower!', (10, 540), 0.8),
+                        (f'Try to get your right elbow', (10, 580), 0.8),
+                        (f'closer to 140', (10, 610), 0.8)
+                    ]
+                    rectangles(texts)
             else:
                 score3 = 0
                 print("not doing fourth")
+                texts = [
+                    (f'Please mirror the dancer example', (10, 540), 0.8),
+                ]
+                rectangles(texts)
             return score3
 
 def scoreFifth():
@@ -128,16 +216,42 @@ def scoreFifth():
                 if (140 < leftElbowAngle < 160 and 140 < rightElbowAngle < 160 and 9 < rightWristAngle < 17 and 9 < leftWristAngle < 17):
                     print("YOOOOO")
                     score4 = 100
+                    texts = [
+                        (f'Excellent!', (10, 540), 0.8)
+                    ]
+                    rectangles(texts)
                 elif (130 < leftElbowAngle < 170 and 130 < rightElbowAngle < 170 and 5 < rightWristAngle < 27 and 5 < leftWristAngle < 27):
                     score4 = 90
+                    texts = [
+                        (f'Think about rounding your wrists!', (10, 540), 0.8),
+                        (f'Try to get your wrist angles', (10, 580), 0.8),
+                        (f'closer to 16', (10, 610), 0.8)
+                    ]
+                    rectangles(texts)
                 elif (120 < leftElbowAngle < 180 and 120 < rightElbowAngle < 180 and 3 < rightWristAngle < 37 and 3 < leftWristAngle < 37):
                     score4 = 70
+                    texts = [
+                        (f'Think about rounding your elbows!', (10, 540), 0.8),
+                        (f'Try to get your elbow angles', (10, 580), 0.8),
+                        (f'closer to 150', (10, 610), 0.8)
+                    ]
+                    rectangles(texts)
                 elif (110 < leftElbowAngle < 190 and 110 < rightElbowAngle < 190 and 0 < rightWristAngle < 47 and 0 < leftWristAngle < 47):
                     score4 = 50
+                    texts = [
+                        (f'Think about rounding your elbows!', (10, 540), 0.8),
+                        (f'Try to get your elbow angles', (10, 580), 0.8),
+                        (f'closer to 134', (10, 610), 0.8)
+                    ]
+                    rectangles(texts)
 
             else:
                 score4 = 0
                 print("not in fifth position")
+                texts = [
+                    (f'Please mirror the dancer example', (10, 540), 0.8),
+                ]
+                rectangles(texts)
             return score4
 def scorePasse():
     if check_landmarks_not_empty(leftFootIndex, leftHeel, rightKnee, rightHip, rightHeel, rightFootIndex, leftWrist, nose, rightShoulder, leftShoulder, rightWrist, leftHip):
@@ -145,15 +259,41 @@ def scorePasse():
             if (leftWrist[1] < nose[1]  and leftWrist[1] < nose[1]): #and rightShoulder[0] < rightWrist[0] < leftShoulder[0] and nose[1] < rightWrist[1] < rightHip[1]):
                 if ( 140 < leftElbowAngle < 160 and 140 < rightElbowAngle < 160 and 9 < rightWristAngle < 25 and 9 < leftWristAngle < 25):
                     score5 = 100
+                    texts = [
+                        (f'Excellent!', (10, 540), 0.8),
+                    ]
+                    rectangles(texts)
                 elif (130 < leftElbowAngle < 170 and 130 < rightElbowAngle < 170 and 5 < rightWristAngle < 27 and 5 < leftWristAngle < 27):
                     score5= 90
+                    texts = [
+                        (f'Think about rounding your wrists!', (10, 540), 0.8),
+                        (f'Try to get your wrist angles', (10, 580), 0.8),
+                        (f'closer to 16', (10, 610), 0.8)
+                    ]
+                    rectangles(texts)
                 elif (120 < leftElbowAngle < 180 and 120 < rightElbowAngle < 180 and 3 < rightWristAngle < 37 and 3 < leftWristAngle < 37):
                     score5 = 70
+                    texts = [
+                        (f'Think about rounding your elbows!', (10, 540), 0.8),
+                        (f'Try to get your elbow angles', (10, 580), 0.8),
+                        (f'closer to 150', (10, 610), 0.8)
+                    ]
+                    rectangles(texts)
                 elif (110 < leftElbowAngle < 190 and 110 < rightElbowAngle < 190 and 0 < rightWristAngle < 47 and 0 < leftWristAngle < 47):
                     score5 = 50
+                    texts = [
+                        (f'Think about rounding your elbows!', (10, 540), 0.8),
+                        (f'Try to get your elbow angles', (10, 580), 0.8),
+                        (f'closer to 134', (10, 610), 0.8)
+                    ]
+                    rectangles(texts)
             else:
                 score5 = 0
                 print("idfjbhefuogvh")
+                texts = [
+                    (f'Please mirror the dancer example', (10, 540), 0.8),
+                ]
+                rectangles(texts)
             return score5
 
 def totalScore(score1, score2, score3, score4, score5):
@@ -297,7 +437,7 @@ while True:
             texts = [
                 ("Welcome to Ballet Bonanza!", (60, 40), 1.2),
                 ("Get ready! In 30 seconds you", (94, 530), 1.0),
-                ("should be prepared with an open space to", (8, 580), 1.0),
+                ("should be prepared with an open space to", (8, 580), 0.9),
                 ("pose", (310, 630), 1.0)
             ]
 
@@ -317,7 +457,7 @@ while True:
             (tw1, th1), b1 = cv2.getTextSize('Your score is : 000',  cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
             cv2.rectangle(frame, (10, 500 - th1 - b1), (10 + tw1, 500 + b1), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -330,7 +470,7 @@ while True:
             (tw2, th2), b2 = cv2.getTextSize('Your score is : 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
             cv2.rectangle(frame, (10, 500 - th2 - b2), (10 + tw2, 500 + b2), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -343,7 +483,7 @@ while True:
             (tw3, th3), b3 = cv2.getTextSize('Your score is : 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
             cv2.rectangle(frame, (10, 500 - th3 - b3), (10 + tw3, 500 + b3), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -356,7 +496,7 @@ while True:
             (tw, th), b = cv2.getTextSize('Your score is : 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
             cv2.rectangle(frame, (10, 500 - th - b), (10 + tw, 500 + b), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -369,7 +509,7 @@ while True:
             (tw, th), b = cv2.getTextSize('Your score is : 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
             cv2.rectangle(frame, (10, 500 - th - b), (10 + tw, 500 + b), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
             overlay_image = cv2.resize(overlay_image, (200, 400))
@@ -380,7 +520,7 @@ while True:
             (tw, th), tb = cv2.getTextSize('Your cumulative score is: 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
             cv2.rectangle(frame, (10, 60 - th - b), (10 + tw, 60 + tb), (255, 255, 255), -1)
             cv2.putText(frame, 'Your cumulative score is: '+str(totalScore(score1,score2,score3,score4,score5)), (10, 60),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
             image_path = 'goodJob.jpg'
             cv2.imshow('frame', frame)
             overlay_image = cv2.imread(image_path)
