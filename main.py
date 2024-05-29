@@ -337,7 +337,7 @@ while True:
             cv2.imshow('Example', overlay_image)
         elif (position_phase == 4):
             dance_position = "Fourth Position"
-            image_path = 'fourthPosition.png'
+            image_path = 'fourthPosition.jpg'
             doForAll(frame, remaining_time, dance_position)
             theScore = scoreFourth()
             (tw3, th3), b3 = cv2.getTextSize('Your score is : 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
