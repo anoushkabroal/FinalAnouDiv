@@ -50,10 +50,18 @@ score3 = 0
 score4 = 0
 score5 = 0
 def doForAll(frame, remaining_time, dance_position):
-    cv2.putText(frame, f'Time left: {int(remaining_time)}s', (10, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
-    cv2.putText(frame, 'Please demonstrate: ' + dance_position, (10, 60),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
+    texts = [
+        (f'Time left: {int(remaining_time)}s', (10, 30), 1.2),
+        (f'Please demonstrate: ' + dance_position, (10, 80), 1.2)
+    ]
+
+    for text, (x, y), scale in texts:
+        (w, h), b = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, scale, 2)
+
+        l = (x, y - h - b)
+        r = (x + w, y + b)
+        cv2.rectangle(frame, l, r, (255, 255, 255), -1)
+        cv2.putText(frame, text, (x, y), cv2.FONT_HERSHEY_SIMPLEX, scale, (0, 0, 0), 2, cv2.LINE_AA)
 
 def scoreFirst():
     global score1
@@ -286,22 +294,28 @@ while True:
         position_phase = int(elapsed_time // timer_duration) + 1
         dance_position = " "
         if(position_phase == 1):
-            cv2.putText(frame, 'Welcome to Ballet Bonanza!', (60, 40),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
-            cv2.putText(frame, 'Get ready! In 30 seconds you', (94, 570),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2, cv2.LINE_AA)
-            cv2.putText(frame, 'should be prepared with an open space to', (10, 590),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2, cv2.LINE_AA)
-            cv2.putText(frame, 'pose', (310, 610),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2, cv2.LINE_AA)
-            cv2.putText(frame, 'Be sure to stand far back from the camera!', (45, 90),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2, cv2.LINE_AA)
+            texts = [
+                ("Welcome to Ballet Bonanza!", (60, 40), 1.2),
+                ("Get ready! In 30 seconds you", (94, 530), 1.0),
+                ("should be prepared with an open space to", (8, 580), 1.0),
+                ("pose", (310, 630), 1.0)
+            ]
+
+            for text, (x, y), scale in texts:
+                (w, h), b = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, scale, 2)
+
+                top_left = (x, y - h - b)
+                bottom_right = (x + w, y + b)
+                cv2.rectangle(frame, top_left, bottom_right, (255, 255, 255), -1)
+                cv2.putText(frame, text, (x, y), cv2.FONT_HERSHEY_SIMPLEX, scale, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
         elif(position_phase == 2):
             dance_position = "First Position"
             image_path = 'firstPosition.png'
             doForAll(frame,remaining_time, dance_position)
             theScore = scoreFirst()
+            (tw1, th1), b1 = cv2.getTextSize('Your score is : 000',  cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
+            cv2.rectangle(frame, (10, 500 - th1 - b1), (10 + tw1, 500 + b1), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
@@ -313,6 +327,8 @@ while True:
             image_path = 'secondPosition.png'
             doForAll(frame, remaining_time, dance_position)
             theScore = scoreSecond()
+            (tw2, th2), b2 = cv2.getTextSize('Your score is : 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
+            cv2.rectangle(frame, (10, 500 - th2 - b2), (10 + tw2, 500 + b2), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
@@ -324,6 +340,8 @@ while True:
             image_path = 'fourthPosition.png'
             doForAll(frame, remaining_time, dance_position)
             theScore = scoreFourth()
+            (tw3, th3), b3 = cv2.getTextSize('Your score is : 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
+            cv2.rectangle(frame, (10, 500 - th3 - b3), (10 + tw3, 500 + b3), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
@@ -335,6 +353,8 @@ while True:
             image_path = 'fifthPosition.png'
             doForAll(frame, remaining_time, dance_position)
             theScore = scoreFifth()
+            (tw, th), b = cv2.getTextSize('Your score is : 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
+            cv2.rectangle(frame, (10, 500 - th - b), (10 + tw, 500 + b), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
@@ -346,6 +366,8 @@ while True:
             image_path = 'rightPasse.png'
             doForAll(frame, remaining_time, dance_position)
             theScore = scorePasse()
+            (tw, th), b = cv2.getTextSize('Your score is : 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
+            cv2.rectangle(frame, (10, 500 - th - b), (10 + tw, 500 + b), (255, 255, 255), -1)
             cv2.putText(frame, 'Your score is : ' + str(theScore), (10, 500),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('frame', frame)
@@ -355,6 +377,8 @@ while True:
         elif(position_phase == 7):
             print(totalScore(score1,score2,score3,score4,score5))
             #print("The score should be printed here and also maybe pass in all the previous scores somehow")
+            (tw, th), tb = cv2.getTextSize('Your cumulative score is: 000', cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
+            cv2.rectangle(frame, (10, 60 - th - b), (10 + tw, 60 + tb), (255, 255, 255), -1)
             cv2.putText(frame, 'Your cumulative score is: '+str(totalScore(score1,score2,score3,score4,score5)), (10, 60),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
             image_path = 'goodJob.jpg'
